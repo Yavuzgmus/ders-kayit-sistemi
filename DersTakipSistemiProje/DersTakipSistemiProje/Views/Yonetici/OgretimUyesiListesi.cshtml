@@ -1,0 +1,44 @@
+﻿@model IEnumerable<DersTakipSistemiProje.Models.OgretimUyesi>
+@{
+    ViewData["Title"] = "Akademik Kadro";
+}
+
+<div class="container mt-4">
+
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Hata"]</div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Akademik Kadro</h2>
+        <a href="/Yonetici/OgretimUyesiEkle" class="btn btn-warning">+ Yeni Hoca Ekle</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Sicil No (ID)</th>
+                <th>Unvan</th>
+                <th>Ad Soyad</th>
+                <th>Bölüm</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hoca in Model)
+            {
+                <tr>
+                    <td>@hoca.OgretimUyesiId</td>
+                    <td>@hoca.Unvan</td>
+                    <td>@hoca.Ad @hoca.Soyad</td>
+                    <td>@(hoca.Bolum != null ? hoca.Bolum.BolumAd : "-")</td>
+                    <td>
+                        <a href="/Yonetici/OgretimUyesiSil?id=@hoca.OgretimUyesiId" class="btn btn-danger btn-sm" onclick="return confirm('Bu öğretim üyesini silmek istediğinize emin misiniz?')">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/Home/Index" class="btn btn-secondary">← Ana Sayfa</a>
+</div>

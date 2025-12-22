@@ -1,0 +1,266 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giriş Yap - Ders Kayıt Sistemi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0061f2 0%, #00ba94 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .login-header {
+            background: #f8f9fa;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .login-icon {
+            font-size: 3rem;
+            color: #0061f2;
+            margin-bottom: 10px;
+        }
+
+        .login-body {
+            padding: 40px 30px;
+        }
+
+        .form-floating > .form-control {
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+            .form-floating > .form-control:focus {
+                border-color: #00ba94;
+                box-shadow: 0 0 0 0.25rem rgba(0, 186, 148, 0.25);
+            }
+
+        .btn-login {
+            background: linear-gradient(to right, #0061f2, #00ba94);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+            .btn-login:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 97, 242, 0.4);
+            }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container d-flex flex-column align-items-center">
+
+        <div class="login-card">
+            <div class="login-header">
+                <i class="bi bi-mortarboard-fill login-icon"></i>
+                <h4 class="fw-bold m-0">Ders Kayıt Sistemi</h4>
+                <p class="text-muted small">Giriş Paneli</p>
+            </div>
+
+            <div class="login-body">
+                @if (ViewBag.Hata != null)
+                {
+                    <div class="alert alert-danger d-flex align-items-center p-2 small mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.Hata
+                    </div>
+                }
+
+                <form action="/Account/Login" method="post">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="kullaniciAdi" id="floatingInput" placeholder="Kullanıcı Adı" required>
+                        <label for="floatingInput"><i class="bi bi-person me-1"></i> Kullanıcı No / Adı</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" name="sifre" id="floatingPassword" placeholder="Şifre" required>
+                        <label for="floatingPassword"><i class="bi bi-lock me-1"></i> Şifre</label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-login">Giriş Yap</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="text-center pb-4 pt-0">
+                <a href="#" class="text-decoration-none text-primary fw-bold small me-3" data-bs-toggle="modal" data-bs-target="#sifreModal" onclick="captchaUret()">
+                    <i class="bi bi-key"></i> Şifremi Unuttum?
+                </a>
+
+                <a href="#" class="text-decoration-none text-muted small" data-bs-toggle="modal" data-bs-target="#ipucuModal">
+                    <i class="bi bi-info-circle"></i> İpucu
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-text">&copy; 2025 Üniversite Ders Kayıt Sistemi</div>
+    </div>
+
+    <div class="modal fade" id="sifreModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning-subtle">
+                    <h5 class="modal-title"><i class="bi bi-shield-lock"></i> Şifremi Unuttum</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-muted">Lütfen numaranızı ve güvenlik sorusunu giriniz.</p>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Öğrenci / Akademisyen No:</label>
+                        <input type="number" id="txtSorguNo" class="form-control" placeholder="Örn: 2001 veya 101">
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3 bg-light p-2 rounded border">
+                        <div class="me-3 fw-bold text-primary fs-5" id="captchaSoru">3 + 5 = ?</div>
+                        <input type="number" id="txtCaptchaCevap" class="form-control" placeholder="Sonucu yazınız" style="width: 120px;">
+                    </div>
+
+                    <div id="sonucAlani" class="alert alert-success d-none mt-3"></div>
+                    <div id="hataAlani" class="alert alert-danger d-none mt-3"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary" onclick="sifreyiGetir()">Sorgula</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ipucuModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title">🔐 Varsayılan Giriş Bilgileri</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Yönetici:</strong> admin / 1234</li>
+                        <li class="list-group-item"><strong>Öğrenci:</strong> 2001 / 123</li>
+                        <li class="list-group-item"><strong>Hoca:</strong> 101 / 123</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        var dogruCevap = 0;
+
+        // 1. Rastgele Captcha Üret
+        function captchaUret() {
+            var s1 = Math.floor(Math.random() * 10) + 1; // 1-10 arası
+            var s2 = Math.floor(Math.random() * 10) + 1;
+            dogruCevap = s1 + s2;
+
+            // Soruyu ekrana yaz
+            document.getElementById("captchaSoru").innerText = s1 + " + " + s2 + " = ?";
+
+            // Cevap kutusunu temizle
+            document.getElementById("txtCaptchaCevap").value = "";
+        }
+
+        function sifreyiGetir() {
+            var girilenCevap = document.getElementById("txtCaptchaCevap").value;
+            var girilenNo = document.getElementById("txtSorguNo").value;
+
+            // KONTROL 1: Captcha Yanlış mı? 
+            if (girilenCevap != dogruCevap) {
+                alert("Güvenlik sorusunu yanlış cevapladınız!");
+                captchaUret(); // Hatalı giriş olsa bile kodu yeniden gönder
+                return;
+            }
+
+            // KONTROL 2: Numara Boş mu? 
+            if (girilenNo == "") {
+                alert("Lütfen numaranızı giriniz!");
+            
+                return;
+            }
+
+            // SUNUCUYA SOR (AJAX) 
+            $.ajax({
+                url: '/Account/SifreOgrenAjax',
+                type: 'POST',
+                data: { id: girilenNo },
+                success: function (data) {
+                    if (data.success) {
+                        // Başarılıysa Şifreyi Göster
+                        document.getElementById("hataAlani").classList.add("d-none");
+                        var sonucDiv = document.getElementById("sonucAlani");
+                        sonucDiv.innerHTML = "<i class='bi bi-check-circle-fill'></i> " + data.mesaj;
+                        sonucDiv.classList.remove("d-none");
+                    } else {
+                        // Numara bulunamadıysa Hata Göster
+                        document.getElementById("sonucAlani").classList.add("d-none");
+                        var hataDiv = document.getElementById("hataAlani");
+                        hataDiv.innerText = data.mesaj;
+                        hataDiv.classList.remove("d-none");
+                    }
+
+                    captchaUret(); // İşlem bittiği için güvenlik kodunu yeniliyoruz
+                },
+                error: function () {
+                    alert("Sunucuyla iletişim kurulurken bir hata oluştu.");
+                    captchaUret(); // Hata durumunda da yenile
+                }me yapıyoruz
+            });
+        }
+    </script>
+
+</body>
+</html>

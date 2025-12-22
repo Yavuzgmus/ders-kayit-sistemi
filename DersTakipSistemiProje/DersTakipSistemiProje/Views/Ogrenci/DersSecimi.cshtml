@@ -1,0 +1,182 @@
+﻿@model List<DersTakipSistemiProje.Models.DersDetay>
+@{
+    ViewData["Title"] = "Ders Seçimi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var kayitliDersler = ViewBag.KayitliDersler as List<int>;
+    if (kayitliDersler == null) kayitliDersler = new List<int>();
+
+    decimal mevcutKredi = 0;
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Ders Kayıt Ekranı</h2>
+        <div class="card bg-light border-primary shadow-sm">
+            <div class="card-body py-2 px-4">
+                <h5 class="m-0 text-primary fw-bold">
+                    Toplam Kredi: <span id="krediSayaci">0</span> / 45
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Hata"]</div>
+    }
+
+    <form action="/Ogrenci/DersKayitTamamla" method="post" id="dersKayitFormu">
+
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Zorunlu Dersler (Seçilmesi Gerekenler)</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">Seç</th>
+                            <th>Kod</th>
+                            <th>Ders Adı</th>
+                            <th>Kredi</th>
+                            <th>Hoca</th>
+                            <th>Tür</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Where(x => x.DersKodNavigation.Tur == "Zorunlu"))
+                        {
+                            bool kayitliMi = kayitliDersler.Contains(item.DersDetayId);
+                            <tr class="table-primary" style="--bs-table-bg-opacity: .1;">
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input ders-secim-kutusu"
+                                               type="checkbox"
+                                               name="secilenDersler"
+                                               value="@item.DersDetayId"
+                                               data-kredi="@item.DersKodNavigation.Kredi"
+                                               @(kayitliMi ? "checked" : "")
+                                               style="transform: scale(1.3); cursor: pointer; border-color: #0d6efd;">
+                                    </div>
+                                </td>
+                                <td>@item.DersKod</td>
+                                <td>@item.DersKodNavigation.DersAd</td>
+                                <td>@item.DersKodNavigation.Kredi</td>
+                                <td>@item.OgretimUyesi.Unvan @item.OgretimUyesi.Ad @item.OgretimUyesi.Soyad</td>
+                                <td><span class="badge bg-primary">Zorunlu</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card border-success mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Seçmeli Ders Havuzu</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">Seç</th>
+                            <th>Kod</th>
+                            <th>Ders Adı</th>
+                            <th>Kredi</th>
+                            <th>Hoca</th>
+                            <th>Tür</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Where(x => x.DersKodNavigation.Tur == "Secmeli"))
+                        {
+                            bool kayitliMi = kayitliDersler.Contains(item.DersDetayId);
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input ders-secim-kutusu"
+                                               type="checkbox"
+                                               name="secilenDersler"
+                                               value="@item.DersDetayId"
+                                               data-kredi="@item.DersKodNavigation.Kredi"
+                                               @(kayitliMi ? "checked" : "")
+                                               style="transform: scale(1.3); cursor: pointer; border-color: #198754;">
+                                    </div>
+                                </td>
+                                <td>@item.DersKod</td>
+                                <td>@item.DersKodNavigation.DersAd</td>
+                                <td>@item.DersKodNavigation.Kredi</td>
+                                <td>@item.OgretimUyesi.Unvan @item.OgretimUyesi.Ad @item.OgretimUyesi.Soyad</td>
+                                <td><span class="badge bg-success">Seçmeli</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-5">
+            <button type="submit" class="btn btn-dark btn-lg px-5 shadow" id="btnKaydet">
+                <i class="bi bi-save me-2"></i> Ders Kaydını Tamamla
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        let toplamKredi = 0;
+        const maxKredi = 45;
+
+        const sayacElem = document.getElementById("krediSayaci");
+        const btnKaydet = document.getElementById("btnKaydet");
+        const checkboxlar = document.querySelectorAll(".ders-secim-kutusu");
+
+        // Sayfa ilk açıldığında işaretli olanları topla (Daha önce kaydedilmiş varsa)
+        checkboxlar.forEach(box => {
+            if (box.checked) {
+                let dersKredisi = parseFloat(box.getAttribute("data-kredi").replace(',', '.'));
+                toplamKredi += dersKredisi;
+            }
+        });
+        updateDisplay();
+
+        // Her tıklamada krediyi güncelle
+        checkboxlar.forEach(box => {
+            box.addEventListener("change", function() {
+                let dersKredisi = parseFloat(this.getAttribute("data-kredi").replace(',', '.'));
+
+                if (this.checked) {
+                    toplamKredi += dersKredisi;
+                } else {
+                    toplamKredi -= dersKredisi;
+                }
+                updateDisplay();
+            });
+        });
+
+        function updateDisplay() {
+            // Yuvarlama hatası olmaması için
+            toplamKredi = Math.round(toplamKredi * 100) / 100;
+            sayacElem.innerText = toplamKredi;
+
+            if (toplamKredi > maxKredi) {
+                sayacElem.style.color = "red";
+                btnKaydet.disabled = true;
+                btnKaydet.innerText = "Kredi Sınırı Aşıldı! (" + toplamKredi + ")";
+                btnKaydet.classList.remove("btn-dark");
+                btnKaydet.classList.add("btn-danger");
+            } else {
+                sayacElem.style.color = "";
+                btnKaydet.disabled = false;
+                btnKaydet.innerText = "Ders Kaydını Tamamla";
+                btnKaydet.classList.add("btn-dark");
+                btnKaydet.classList.remove("btn-danger");
+            }
+        }
+    });
+</script>

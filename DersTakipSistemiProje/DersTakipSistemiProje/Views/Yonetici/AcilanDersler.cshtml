@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DersTakipSistemiProje.Models.DersDetay>
+@{
+    ViewData["Title"] = "Açılan Dersler";
+}
+
+<div class="container mt-4">
+    <h2>Bu Dönem Açılan Dersler</h2>
+    <a href="/Yonetici/DersAc" class="btn btn-primary mb-3">Yeni Ders Aç</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ders Adı</th>
+                <th>Öğretim Üyesi</th>
+                <th>Dönem</th>
+                <th>Kontenjan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.DersKodNavigation != null ? item.DersKodNavigation.DersAd : item.DersKod)</td>
+
+                    <td>@(item.OgretimUyesi != null ? item.OgretimUyesi.Ad + " " + item.OgretimUyesi.Soyad : "-")</td>
+
+                    <td>@(item.Donem != null ? item.Donem.Yil + " " + item.Donem.Yariyil : "-")</td>
+
+                    <td>@item.Kontenjan</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/Home/Index" class="btn btn-secondary">← Ana Sayfa</a>
+</div>

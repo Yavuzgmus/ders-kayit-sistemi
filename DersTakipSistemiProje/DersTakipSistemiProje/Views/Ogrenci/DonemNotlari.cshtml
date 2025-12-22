@@ -1,0 +1,109 @@
+﻿@model List<DersTakipSistemiProje.Models.Notlar>
+@{
+    ViewData["Title"] = "Dönem Notları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <a href="/Home/Index" class="btn btn-outline-secondary me-3">
+                <i class="bi bi-arrow-left-circle-fill me-1"></i> Ana Sayfa
+            </a>
+            <h2 class="mb-0 text-dark">Aktif Dönem Notları</h2>
+        </div>
+
+        <div class="card bg-info text-white shadow-sm border-0">
+            <div class="card-body py-2 px-4">
+                <h5 class="m-0">Dönem Ortalaması (YANO): <strong>@ViewBag.Yano</strong></h5>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success shadow-sm">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["BasariMesaji"]
+        </div>
+    }
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover table-striped mb-0 align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="py-3 ps-4">Ders Kodu</th>
+                        <th class="py-3">Ders Adı</th>
+                        <th class="py-3">Öğretim Üyesi</th>
+                        <th class="text-center py-3">Vize</th>
+                        <th class="text-center py-3">Final</th>
+                        <th class="text-center py-3">Harf</th>
+                        <th class="text-center py-3 pe-4">Durum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-exclamation-circle fs-1 d-block mb-3"></i>
+                                Henüz ders kaydı yapmadınız veya not kaydı bulunamadı.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold ps-4 text-primary">@item.DersDetay.DersKod</td>
+                                <td class="fw-semibold">@item.DersDetay.DersKodNavigation.DersAd</td>
+                                <td>
+                                    <small class="text-muted d-block">
+                                        @item.DersDetay.OgretimUyesi.Unvan
+                                        @item.DersDetay.OgretimUyesi.Ad
+                                        @item.DersDetay.OgretimUyesi.Soyad
+                                    </small>
+                                </td>
+
+                                <td class="text-center fw-bold">
+                                    @(item.Vize == null ? "-" : item.Vize.ToString())
+                                </td>
+                                <td class="text-center fw-bold">
+                                    @(item.Final == null ? "-" : item.Final.ToString())
+                                </td>
+                                <td class="text-center">
+                                    @if (item.HarfNotu == "NA")
+                                    {
+                                        <span class="badge bg-secondary opacity-75">Girilmedi</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-dark">@item.HarfNotu</span>
+                                    }
+                                </td>
+                                <td class="text-center pe-4">
+                                    @if (item.HarfNotu == "NA")
+                                    {
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-hourglass-split"></i> Bekleniyor
+                                        </span>
+                                    }
+                                    else if (item.HarfNotu == "FF" || item.HarfNotu == "DZ")
+                                    {
+                                        <span class="badge bg-danger">Kaldı</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Geçti</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

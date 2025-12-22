@@ -1,0 +1,167 @@
+﻿@model DersTakipSistemiProje.Models.Ogrenci
+@{
+    ViewData["Title"] = "Kişisel Bilgiler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .top-border-purple {
+        border-top: 4px solid #6f42c1; 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        background: white;
+        border-radius: 4px;
+    }
+
+    .profile-img-lg {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #f1f1f1;
+    }
+
+    .section-header-gray {
+        background-color: #e9ecef;
+        padding: 10px 15px;
+        color: #495057;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .icon-circle-info {
+        width: 50px;
+        height: 50px;
+        background-color: #17a2b8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+    }
+
+    .btn-custom-cancel {
+        background-color: #dc3545;
+        color: white;
+        border-radius: 20px; 
+        padding: 8px 25px;
+        border: none;
+    }
+
+    .btn-custom-save {
+        background-color: #00ba94; 
+        color: white;
+        border-radius: 20px;
+        padding: 8px 25px;
+        border: none;
+    }
+
+        .btn-custom-save:hover {
+            background-color: #008f72;
+            color: white;
+        }
+
+    .btn-custom-cancel:hover {
+        background-color: #b02a37;
+        color: white;
+    }
+
+    .form-control:focus {
+        border-color: #00ba94;
+        box-shadow: 0 0 0 0.2rem rgba(0, 186, 148, 0.25);
+    }
+</style>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-secondary">Kişisel Bilgiler</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/Home/Index" class="text-decoration-none">Öğrenci</a></li>
+                <li class="breadcrumb-item active">KisiselBilgiler</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Mesaj"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form action="/Ogrenci/KisiselBilgiler" method="post">
+        <input type="hidden" name="OgrenciId" value="@Model.OgrenciId" />
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="p-4 top-border-purple d-flex align-items-center h-100">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img-lg me-3">
+                    <div>
+                        <h5 class="mb-0 fw-bold">@Model.Ad.ToUpper() @Model.Soyad.ToUpper()</h5>
+                        <div class="text-muted small">Öğr. No: @Model.OgrenciId</div>
+                        <div class="text-muted small">Sınıf: @(Model.Sinif ?? 1)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-4 top-border-purple d-flex align-items-center h-100">
+                    <div class="icon-circle-info me-3">
+                        <i class="bi bi-info"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1 text-uppercase fw-bold text-secondary" style="font-size: 0.85rem;">GENEL BİLGİLER</h6>
+                        <div class="text-muted small">Kayıt Tarihi: @(Model.KayitTarihi.HasValue? Model.KayitTarihi.Value.ToString("dd MMMM yyyy") : "-")</div>
+                        <div class="text-muted small">Danışman: myilmaz@ktun.edu.tr</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="section-header-gray">
+            İletişim ve Adres Bilgileri
+        </div>
+
+        <div class="card border-0 shadow-sm p-4">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted small">Telefon</label>
+                    <input type="text" name="Telefon" class="form-control" value="@Model.Telefon" placeholder="90 555 123 45 67">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted small">E-Posta</label>
+                    <input type="email" name="EPosta" class="form-control" value="@Model.EPosta" placeholder="ornek@gmail.com">
+                </div>
+
+                <div class="col-12 mb-4">
+                    <label class="form-label text-muted small">Adres</label>
+                    <textarea name="Adres" class="form-control" rows="4" placeholder="Adresinizi buraya giriniz...">@Model.Adres</textarea>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="/Home/Index" class="btn-custom-cancel text-decoration-none">
+                    <i class="bi bi-x-circle me-1"></i> İptal
+                </a>
+                <button type="submit" class="btn-custom-save">
+                    <i class="bi bi-check2 me-1"></i> Kaydet
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>

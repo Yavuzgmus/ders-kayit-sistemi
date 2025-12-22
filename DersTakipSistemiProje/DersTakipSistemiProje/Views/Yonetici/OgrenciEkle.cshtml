@@ -1,0 +1,77 @@
+﻿@model DersTakipSistemiProje.Models.Ogrenci
+@{
+    ViewData["Title"] = "Yeni Öğrenci Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="m-0"><i class="bi bi-person-plus-fill"></i> Yeni Öğrenci Kaydı</h4>
+        </div>
+        <div class="card-body">
+
+            <form method="post" action="/Yonetici/OgrenciEkle">
+
+                <h6 class="text-success border-bottom pb-2 mb-3">Okul Bilgileri</h6>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Ad</label>
+                        <input type="text" name="Ad" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Soyad</label>
+                        <input type="text" name="Soyad" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Öğrenci No (ID)</label>
+                        <input type="number" name="OgrenciId" class="form-control" placeholder="Örn: 2025001" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Sınıf</label>
+                        <input type="number" name="Sinif" class="form-control" min="1" max="4" value="1" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Bölüm</label>
+                        <select name="BolumId" class="form-select" required>
+                            <option value="">Bölüm Seçiniz...</option>
+                            @if (ViewBag.Bolumler != null)
+                            {
+                                @foreach (var bolum in ViewBag.Bolumler)
+                                {
+                                    <option value="@bolum.BolumId">@bolum.BolumAd</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <h6 class="text-success border-bottom pb-2 mb-3 mt-4">İletişim Bilgileri</h6>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-envelope"></i> E-Posta</label>
+                        <input type="email" name="EPosta" class="form-control" placeholder="ogrenci@mail.com" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="bi bi-telephone"></i> Telefon</label>
+                        <input type="text" name="Telefon" class="form-control" placeholder="0555 123 45 67" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label"><i class="bi bi-geo-alt"></i> Adres</label>
+                    <textarea name="Adres" class="form-control" rows="3" placeholder="Açık adres giriniz..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 btn-lg">
+                    <i class="bi bi-check-circle"></i> Öğrenciyi Kaydet
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>

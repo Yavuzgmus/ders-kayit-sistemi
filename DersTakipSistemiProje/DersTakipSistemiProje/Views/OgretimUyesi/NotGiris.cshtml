@@ -1,0 +1,127 @@
+﻿@model IEnumerable<DersTakipSistemiProje.Models.Notlar>
+@{
+    ViewData["Title"] = "Not Girişi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary">
+            <i class="bi bi-journal-bookmark-fill"></i> @ViewBag.DersAdi - Not Listesi
+        </h3>
+        <a href="/OgretimUyesi/VerilenDersler" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Derslere Dön
+        </a>
+    </div>
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle-fill"></i> @TempData["Mesaj"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Hata"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle mb-0">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>No</th>
+                            <th>Ad Soyad</th>
+                            <th style="width: 120px;">Vize (%40)</th>
+                            <th style="width: 120px;">Final (%60)</th>
+                            <th>Harf</th>
+                            <th style="width: 120px;">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model == null || !Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Öğrenci bulunamadı.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                var ogrId = item.Ogrenci.OgrenciId;
+                                var vizeInputId = "vize_" + ogrId;
+                                var finalInputId = "final_" + ogrId;
+
+                                <tr>
+                                    <td class="text-center fw-bold">@ogrId</td>
+                                    <td>@item.Ogrenci.Ad @item.Ogrenci.Soyad</td>
+
+                                    <td>
+                                        <input type="number"
+                                               id="@vizeInputId"
+                                               value="@item.Vize"
+                                               class="form-control text-center fw-bold text-primary"
+                                               min="0" max="100" placeholder="-" />
+                                    </td>
+
+                                    <td>
+                                        <input type="number"
+                                               id="@finalInputId"
+                                               value="@item.Final"
+                                               class="form-control text-center fw-bold text-danger"
+                                               min="0" max="100" placeholder="-" />
+                                    </td>
+
+                                    <td class="text-center">
+                                        @if (item.HarfNotu != "NA" && item.HarfNotu != null)
+                                        {
+                                            var renk = (item.HarfNotu == "FF" || item.HarfNotu == "FD") ? "danger" : "success";
+                                            <span class="badge bg-@renk fs-6">@item.HarfNotu</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">--</span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button type="button"
+                                                class="btn btn-success btn-sm w-100"
+                                                onclick="notuKaydet(@item.DersDetayId, @item.Ogrenci.OgrenciId)">
+                                            <i class="bi bi-save"></i> Kaydet
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="globalKayitFormu" action="@Url.Action("NotKaydet", "OgretimUyesi")" method="post" style="display:none;">
+    <input type="hidden" name="id" id="form_id">
+    <input type="hidden" name="OgrenciId" id="form_ogrenciId">
+    <input type="hidden" name="Vize" id="form_vize">
+    <input type="hidden" name="Final" id="form_final">
+</form>
+
+<script>
+    function notuKaydet(dersDetayId, ogrenciId) {
+        var vizeDegeri = document.getElementById("vize_" + ogrenciId).value;
+        var finalDegeri = document.getElementById("final_" + ogrenciId).value;
+
+        document.getElementById("form_id").value = dersDetayId;
+        document.getElementById("form_ogrenciId").value = ogrenciId;
+        document.getElementById("form_vize").value = vizeDegeri;
+        document.getElementById("form_final").value = finalDegeri;
+
+        document.getElementById("globalKayitFormu").submit();
+    }
+</script>

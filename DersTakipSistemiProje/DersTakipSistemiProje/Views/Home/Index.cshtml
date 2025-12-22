@@ -1,0 +1,362 @@
+﻿@model DersTakipSistemiProje.Models.Ogrenci
+@{
+    ViewData["Title"] = "Ana Sayfa";
+    string rol = ViewBag.Role as string;
+    string adSoyad = ViewBag.AdSoyad as string;
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .sidebar-card {
+        background: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 3px solid #f1f1f1;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #eee;
+        }
+
+            .sidebar-menu li a {
+                display: block;
+                padding: 12px 15px;
+                color: #555;
+                text-decoration: none;
+                font-size: 0.95rem;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+            }
+
+                .sidebar-menu li a:hover {
+                    background-color: #f8f9fa;
+                    color: #007bff;
+                    padding-left: 20px;
+                }
+
+                .sidebar-menu li a.active {
+                    color: #00ba94;
+                    font-weight: 600;
+                    border-left: 3px solid #00ba94;
+                    background-color: #f1fcf9;
+                }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+    .content-header-line {
+        border-top: 3px solid #f9ab00;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .info-card {
+        background: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 4px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-icon-circle {
+        width: 60px;
+        height: 60px;
+        background-color: #e9f5f9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #17a2b8;
+        font-size: 1.5rem;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+
+    .advisor-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+        border: 2px solid #eee;
+    }
+
+    .info-text strong {
+        display: block;
+        color: #333;
+        font-size: 0.9rem;
+        margin-bottom: 3px;
+    }
+
+    .info-text span {
+        display: block;
+        color: #777;
+        font-size: 0.85rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .notice-box {
+        background: white;
+        border: 1px solid #e1e1e1;
+        padding: 20px;
+        margin-top: 20px;
+        border-top: 3px solid #6f42c1;
+    }
+
+    .dashboard-hero {
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-bottom: 40px;
+        color: white;
+    }
+
+    .hero-admin {
+        background: linear-gradient(135deg, #d93025 0%, #f9ab00 100%);
+    }
+
+    .hero-teacher {
+        background: linear-gradient(135deg, #673ab7 0%, #3f51b5 100%);
+    }
+
+    .action-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #eaeaea;
+        border-radius: 12px;
+        background: white;
+    }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
+        }
+
+    .card-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .border-top-primary {
+        border-top: 4px solid #0061f2;
+    }
+
+    .border-top-warning {
+        border-top: 4px solid #ffc107;
+    }
+
+    .border-top-success {
+        border-top: 4px solid #00ba94;
+    }
+
+    .border-top-danger {
+        border-top: 4px solid #dc3545;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> <strong>Başarılı!</strong> @TempData["BasariMesaji"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+        </div>
+    }
+
+    @if (rol == "Ogrenci" && Model != null)
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profil" class="profile-img">
+                    <h5 class="mb-1" style="font-size: 1rem; font-weight: 700;">@Model.Ad.ToUpper() @Model.Soyad.ToUpper()</h5>
+                    <small class="text-muted">Öğr. No: @Model.OgrenciId</small>
+                </div>
+                <div class="sidebar-card p-0 overflow-hidden">
+                    <div class="bg-light p-2 border-bottom text-muted small fw-bold px-3">ÖĞRENCİ İŞLEMLERİ</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="/Home/Index" class="active"><i class="bi bi-house-door"></i> Ana Sayfa</a></li>
+                        <li><a href="/Ogrenci/KisiselBilgiler"><i class="bi bi-person-vcard"></i> Kişisel Bilgiler</a></li>
+                        <li><a href="/Ogrenci/DonemNotlari"><i class="bi bi-bar-chart-steps"></i> Aktif Dönem Notları</a></li>
+                        <li><a href="/Ogrenci/DersSecimi"><i class="bi bi-pencil-square"></i> Ders Kayıt</a></li>
+                        <li><a href="/Ogrenci/Transkript"><i class="bi bi-file-earmark-text"></i> Transkript</a></li>
+                        <li><a href="/Account/Logout" class="text-danger"><i class="bi bi-box-arrow-right"></i> Çıkış Yap</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <h4 class="mb-3 text-secondary">Anasayfa</h4>
+                <div class="content-header-line"></div>
+                <div class="row g-4">
+                    <div class="col-md-8">
+                        <div class="info-card">
+                            <div class="info-icon-circle"><i class="bi bi-info-lg"></i></div>
+                            <div class="info-text">
+                                <div class="row">
+                                    <div class="col-md-6 mb-2"><strong>Ad Soyad:</strong> <span>@Model.Ad.ToUpper() @Model.Soyad.ToUpper()</span></div>
+                                    <div class="col-md-6 mb-2"><strong>Öğr. No:</strong> <span>@Model.OgrenciId</span></div>
+                                    <div class="col-md-6 mb-2"><strong>Sınıf:</strong> <span>@(Model.Sinif ?? 1). Sınıf</span></div>
+                                    <div class="col-md-6 mb-2"><strong>Azami Dönem:</strong> <span>8</span></div>
+                                    <div class="col-12 mb-2"><strong>Program:</strong> <span>@(Model.Bolum != null ? Model.Bolum.FakulteAd + " / " + Model.Bolum.BolumAd : "-")</span></div>
+                                    <div class="col-12"><strong>Mail:</strong> <span>@(string.IsNullOrEmpty(Model.EPosta) ? Model.OgrenciId + "@uni.edu.tr" : Model.EPosta)</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" class="advisor-img" alt="Danışman">
+                            <div class="info-text">
+                                <h6 class="fw-bold mb-3 text-uppercase text-danger" style="font-size: 0.8rem;">DANIŞMAN BİLGİLERİ</h6>
+                                <strong>Ad Soyad:</strong> <span class="mb-2">Dr. Öğr. Üyesi Danışman Hoca</span>
+                                <strong>Mail:</strong> <span>danisman@uni.edu.tr</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 bg-white border p-3 rounded">
+                    <h6 class="section-title">Aktif Anketler</h6>
+                    <div class="alert alert-light text-danger border-0 p-0">
+                        <i class="bi bi-exclamation-circle me-1"></i> Cevaplanmayan anket bulunmamaktadır.
+                    </div>
+                </div>
+                <div class="notice-box">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="text-primary fw-bold">GENÇLİK BİLGİ YARIŞMASI</h6>
+                        <span class="badge bg-primary">YENİ</span>
+                    </div>
+                    <p class="text-muted small mt-2">
+                        Üniversite öğrencilerine yönelik düzenlenecek olan ödüllü bilgi yarışması başvuruları başlamıştır.
+                        Detaylı bilgi için <a href="#">tıklayınız.</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+
+    else if (rol == "Yonetici")
+    {
+        <div class="dashboard-hero hero-admin d-flex align-items-center justify-content-between">
+            <div>
+                <h1 class="mb-2">Yönetim Paneli</h1>
+                <p class="lead mb-0">Hoş geldin @adSoyad, sistem kontrolleri aşağıdadır.</p>
+            </div>
+            <i class="bi bi-shield-lock text-white-50 d-none d-md-block" style="font-size: 5rem;"></i>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm action-card border-top-danger">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-collection card-icon text-danger"></i>
+                        <h5 class="card-title">Ders Kataloğu</h5>
+                        <p class="small text-muted">Ders ekle/düzenle</p>
+                        <a href="/Yonetici/DersListesi" class="btn btn-outline-danger w-100 mt-2 stretched-link">Dersleri Yönet</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm action-card border-top-success">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-calendar-check card-icon text-success"></i>
+                        <h5 class="card-title">Dönem İşlemleri</h5>
+                        <p class="small text-muted">Ders aç ve hoca ata</p>
+                        <a href="/Yonetici/AcilanDersler" class="btn btn-outline-success w-100 mt-2 stretched-link">Açılan Dersler</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm action-card border-top-primary">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-people card-icon text-primary"></i>
+                        <h5 class="card-title">Öğrenci İşlemleri</h5>
+                        <p class="small text-muted">Öğrenci kayıt/silme</p>
+                        <a href="/Yonetici/OgrenciListesi" class="btn btn-outline-primary w-100 mt-2 stretched-link">Öğrenciler</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm action-card border-top-warning">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-person-workspace card-icon text-warning"></i>
+                        <h5 class="card-title">Akademik Kadro</h5>
+                        <p class="small text-muted">Hoca kayıt işlemleri</p>
+                        <a href="/Yonetici/OgretimUyesiListesi" class="btn btn-outline-warning w-100 mt-2 stretched-link">Hocalar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    else if (rol == "OgretimUyesi")
+    {
+        <div class="dashboard-hero hero-teacher d-flex align-items-center justify-content-between">
+            <div>
+                <h1 class="mb-2">Akademisyen Paneli</h1>
+                <p class="lead mb-0">Sayın @adSoyad, ders ve not işlemlerini buradan yönetebilirsiniz.</p>
+            </div>
+            <i class="bi bi-person-video3 text-white-50 d-none d-md-block" style="font-size: 5rem;"></i>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm action-card border-top-warning">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-pencil-square card-icon text-warning"></i>
+                        <h5 class="card-title">Derslerim ve Not Girişi</h5>
+                        <p class="card-text text-muted">Sorumlu olduğunuz dersleri görüntüleyin ve öğrenci notlarını girin.</p>
+                        <a href="/OgretimUyesi/VerilenDersler" class="btn btn-warning w-100 mt-3 stretched-link">Dersleri Listele</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    else
+    {
+        <div class="alert alert-danger text-center">
+            <strong>Hata:</strong> Kullanıcı rolü algılanamadı veya oturum süresi doldu. Lütfen tekrar giriş yapınız.
+            <br /><br />
+            <a href="/Account/Logout" class="btn btn-primary">Giriş Ekranına Dön</a>
+        </div>
+    }
+
+</div>

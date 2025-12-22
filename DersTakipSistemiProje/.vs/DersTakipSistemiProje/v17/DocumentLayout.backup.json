@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Yavuz G\u00FCm\u00FC\u015F\\source\\repos\\DersTakipSistemiProje\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2AEE4541-8116-4507-9630-8CB8B27B3003}|DersTakipSistemiProje\\DersTakipSistemiProje.csproj|c:\\users\\yavuz g\u00FCm\u00FC\u015F\\source\\repos\\derstakipsistemiproje\\derstakipsistemiproje\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2AEE4541-8116-4507-9630-8CB8B27B3003}|DersTakipSistemiProje\\DersTakipSistemiProje.csproj|solutionrelative:derstakipsistemiproje\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Yavuz G\u00FCm\u00FC\u015F\\source\\repos\\DersTakipSistemiProje\\DersTakipSistemiProje\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "DersTakipSistemiProje\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Yavuz G\u00FCm\u00FC\u015F\\source\\repos\\DersTakipSistemiProje\\DersTakipSistemiProje\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "DersTakipSistemiProje\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAowIIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T12:58:07.752Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
