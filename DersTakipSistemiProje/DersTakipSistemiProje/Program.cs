@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-// Veritabaný Baðlantýsý (Context)
+// VeritabanÄ± BaÄŸlantÄ±sÄ± (Context)
 builder.Services.AddDbContext<DersTakipSistemiProje.Models.DersKayitSistemiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -13,7 +13,7 @@ builder.Services.AddControllersWithViews();
 // Session servisini ekle
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(20); // 20 dakika hareketsiz kalýrsa oturum düþer
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // 20 dakika hareketsiz kalÄ±rsa oturum dÃ¼ÅŸer
 });
 
 builder.Services.AddHttpContextAccessor();
@@ -30,10 +30,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
-app.UseSession(); // Session'ý aktif et
+app.UseSession(); // Session'Ä± aktif et
 app.UseAuthorization(); // Yetkilendirmeyi aktif et
-
-app.UseAuthorization();
 
 app.MapStaticAssets();
 

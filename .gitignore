@@ -1,0 +1,35 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Derleme çıktıları
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Yerel ayarlar / gizli bilgiler
+appsettings.*.local.json
+*.env
+
+# İşletim sistemi
+Thumbs.db
+Desktop.ini
+.DS_Store
